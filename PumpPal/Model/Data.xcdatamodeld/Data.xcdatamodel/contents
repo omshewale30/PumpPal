@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22225" systemVersion="23B2073" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="FoodHistoryEntity" representedClassName="FoodHistoryEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="date" optional="YES" attributeType="String"/>
+        <relationship name="foodItem" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="FoodItemEntity"/>
+        <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UserEntity"/>
+    </entity>
+    <entity name="FoodItemEntity" representedClassName="FoodItemEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="calories" optional="YES" attributeType="String"/>
+        <attribute name="carbohydrates" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="foodName" optional="YES" attributeType="String"/>
+        <attribute name="latitude" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="longitude" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="protein" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="totalFat" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <relationship name="foodHistory" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="FoodHistoryEntity"/>
+    </entity>
+    <entity name="UserEntity" representedClassName="UserEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="password" optional="YES" attributeType="String"/>
+        <attribute name="username" optional="YES" attributeType="String"/>
+        <relationship name="foodHistory" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="FoodHistoryEntity"/>
+    </entity>
+</model>
