@@ -9,12 +9,10 @@ import SwiftUI
 
 @main
 struct PumpPalApp: App {
-    let persistenceController = PersistenceController.shared
     let userStore=UserStore()
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .environment(\.managedObjectContext, persistenceController.container.viewContext)
                 .environmentObject(userStore)
         }
     }

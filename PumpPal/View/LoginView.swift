@@ -15,7 +15,7 @@ struct LoginView: View {
     @State private var shouldNavigateToActionView=false
     @State private var isShowingAlert=false
     @State private var isAuth=false
-    
+    @StateObject var coreVM=CoreDataViewModel()
     @Environment(\.managedObjectContext) private var viewContext
     
     var body: some View{
@@ -75,7 +75,7 @@ struct LoginView: View {
             )
     }
         private func authenticateUser(){
-            let context=PersistenceController.shared.container.viewContext
+            let context=coreVM.container.viewContext
             let fetchRequest : NSFetchRequest<UserEntity>=UserEntity.fetchRequest()
             fetchRequest.predicate=NSPredicate(format: "username == %@", username)
     

@@ -36,7 +36,7 @@ struct ViewHistory: View {
                                 .padding()
                             
                             Button("Show data", action: {
-                                getFood(forUser: userStore.loggedInUser!, forDate: formatToDayMonth(date))
+                                fetchedFood = coreVM.getFood(forUser: userStore.loggedInUser!, forDate: formatToDayMonth(date))
                             })
 
 
@@ -67,28 +67,6 @@ struct ViewHistory: View {
                     }
         )
     }
-    
-    func getFood(forUser user: UserEntity, forDate date: String) -> [FoodItemEntity] {
-        let userFetchRequest: NSFetchRequest<UserEntity> = UserEntity.fetchRequest()
-        userFetchRequest.predicate = NSPredicate(format: "username == %@", argumentArray: [user.username])
-        
-        do {
-            let currentUser = try viewContext.fetch(userFetchRequest)
-            if let cur_user = currentUser.first {
-                print(" \(String(describing: cur_user.username)) foodHistory has these many foodhistory entities \(String(describing: cur_user.foodHistory?.count))")
-                if let foodHistorySet=cur_user.foodHistory as? Set<FoodHistoryEntity>{
-                    let filteredFoodHistory=foodHistorySet.filter{$0.date == date}
-                    print("Size of foodItemHistory for date \(date) is \(filteredFoodHistory.count)")
-                    return filteredFoodHistory.flatMap{$0.foodItem?.allObjects as? [FoodItemEntity] ?? []}
-                }
-            }
-        } catch{
-            print("user not found")
-        }
-        return []
-    }
-        
-
     func formatToDayMonth(_ date: Date) -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MM/dd/yyyy"

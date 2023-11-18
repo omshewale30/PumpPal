@@ -10,17 +10,6 @@ import SwiftUI
 import CoreData
 
 struct ContentView: View {
-    @Environment(\.managedObjectContext) private var viewContext
-
-    @FetchRequest(
-        sortDescriptors: [NSSortDescriptor(keyPath: \UserEntity.username, ascending: true)],
-        animation: .default)
-    
-    private var items: FetchedResults<UserEntity>
-    
-
-
-
         var body: some View {
             NavigationStack{
                 VStack(spacing: 20) {

@@ -13,13 +13,7 @@ struct MealEntry: View {
     @StateObject var coreVM=CoreDataViewModel()
     @State private var date:Date = .now
     @EnvironmentObject var userStore: UserStore
-    
-    @Environment(\.managedObjectContext) private var viewContext
-    @FetchRequest(
-        sortDescriptors: [NSSortDescriptor(keyPath: \UserEntity.username, ascending: true)],
-        animation: .default)
-    
-    private var Users: FetchedResults<UserEntity>
+
     var body: some View {
         
         
@@ -36,7 +30,7 @@ struct MealEntry: View {
             Button(action: {
                 makeAPICall(query: foodItem){ foodResponse in
                     if let foodResponse = foodResponse{       
-                        saveFood(foodResponse: foodResponse, forUser: userStore.loggedInUser!, forDate: formatToDayMonth(date))
+                        coreVM.saveFood(foodResponse: foodResponse, forUser: userStore.loggedInUser!, forDate: formatToDayMonth(date))
                     }
                     else{
                         print("No response")
@@ -67,66 +61,6 @@ struct MealEntry: View {
         return formattedDateString
     }
 
-
-
-
-    
-    
-    private func saveFood(foodResponse: FoodResponse, forUser user: UserEntity, forDate date: String) {
-        
-        let userFetchRequest: NSFetchRequest<UserEntity> = UserEntity.fetchRequest()
-        userFetchRequest.predicate = NSPredicate(format: "username == %@", argumentArray: [user.username])
-
-        do {
-            let currentUser = try viewContext.fetch(userFetchRequest)
-            if let cur_user = currentUser.first {
-                
-                do{
-                    print("Found user: \(user.username ?? "Unknown username")")
-                    let foodHistoryFetchRequest: NSFetchRequest<FoodHistoryEntity> = FoodHistoryEntity.fetchRequest()
-                    foodHistoryFetchRequest.predicate=NSPredicate(format: "date == %@ AND user == %@", argumentArray: [date,cur_user])
-                    let existingFoodHistoryEntities = try viewContext.fetch(foodHistoryFetchRequest)
-                    
-                    if let foodHistoryEntity = existingFoodHistoryEntities.first{
-                   
-                        associateFoodItems(with: foodResponse.foods,to:foodHistoryEntity)
-                    }else{
-                        let newFoodHistoryEntity = FoodHistoryEntity(context: viewContext)
-                        newFoodHistoryEntity.date = date
-                        newFoodHistoryEntity.user = cur_user
-                        cur_user.addToFoodHistory(newFoodHistoryEntity)
-                        associateFoodItems(with: foodResponse.foods, to: newFoodHistoryEntity)
-                    }
-                    try viewContext.save()
-                    
-                    print("Saved the foodHistory for date \(date)")
-                }
-                catch{
-                    print("Error saving FoodHistoryEntity: \(error)")
-                }
-                
-            } else {
-                print("User not found")
-            }
-        } catch {
-            print("Error fetching user: \(error)")
-        }
-    }
-    
-
-
-
-    func associateFoodItems(with foodItems:[FoodItem], to foodHistoryEntity:FoodHistoryEntity) {
-        for foodItem in foodItems{
-            let newFoodItemEntity=FoodItemEntity(context: viewContext)
-            newFoodItemEntity.foodName=foodItem.foodName
-            newFoodItemEntity.calories=String(foodItem.calories)
-            newFoodItemEntity.carbohydrates=foodItem.carbohydrates
-            newFoodItemEntity.protein=foodItem.protein
-            newFoodItemEntity.totalFat=foodItem.totalFat
-            foodHistoryEntity.addToFoodItem(newFoodItemEntity)
-        }
-    }
 
     
     private func makeAPICall(query:String,completion: @escaping (FoodResponse?) -> Void) {
