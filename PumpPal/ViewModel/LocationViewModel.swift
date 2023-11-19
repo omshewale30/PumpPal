@@ -8,6 +8,7 @@
 import Foundation
 import CoreLocation
 
+
 class LocationViewModel: NSObject, ObservableObject, CLLocationManagerDelegate{
     private var locationManager = CLLocationManager()
     private var coordinate:CLLocationCoordinate2D = .init()
@@ -24,6 +25,7 @@ class LocationViewModel: NSObject, ObservableObject, CLLocationManagerDelegate{
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = locations.first {
             userLocation = location
+            print("got user's location")
         }
     }
     

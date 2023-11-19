@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ActionView: View {
     @EnvironmentObject var userStore: UserStore
+    @State private var logOut=false
     var body: some View {
             VStack(spacing: 20) {
                 Spacer()
@@ -30,11 +31,21 @@ struct ActionView: View {
                 
                 Button("Logout", action: {
                     userStore.logout()
+                    logOut=true
+                  
                 })
                 .buttonStyle(CustomButtonStyle1())
                 
                 Spacer()
             }
+            .background(
+                NavigationLink(
+                    destination: LoginView().navigationBarBackButtonHidden(true),
+                    isActive: $logOut,
+                    label: { EmptyView() }
+                )
+        
+            )
             .navigationTitle("Activity Tracker")
             .padding()
         }

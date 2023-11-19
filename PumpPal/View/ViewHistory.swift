@@ -42,16 +42,23 @@ struct ViewHistory: View {
 
                             ForEach(Array(fetchedFood), id: \.self) { foodItem in
                                 VStack(alignment: .center) {
+                                    
                                     if let foodName = foodItem.foodName {
                                         Text("Name \(foodName)")
                                             .font(.headline)
                                     }
-                                          Text("Carbohydrate \(foodItem.carbohydrates)")
-                                              .font(.headline)
-                                          Text("Fats \(foodItem.totalFat)")
-                                              .font(.headline)
-                                          Text("Protein \(foodItem.protein)")
-                                              .font(.headline)
+                                  Text("Carbohydrate \(foodItem.carbohydrates)")
+                                  .font(.headline)
+                                  Text("Fats \(foodItem.totalFat)")
+                                      .font(.headline)
+                                  Text("Protein \(foodItem.protein)")
+                                      .font(.headline)
+                                    Text("LATITUDE \(foodItem.latitude)")
+                                        .font(.headline)
+                                    Text("longitude \(foodItem.longitude)")
+                                        .font(.headline)
+                                    
+                                    
                                       }
                                       .background(gradientEntry.edgesIgnoringSafeArea(.all))
                                       .padding(20)

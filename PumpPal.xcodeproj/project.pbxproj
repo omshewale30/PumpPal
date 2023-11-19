@@ -12,7 +12,6 @@
 		743023672AE489B9002CDD59 /* ViewHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 743023662AE489B9002CDD59 /* ViewHistory.swift */; };
 		743023692AE489E3002CDD59 /* LocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 743023682AE489E3002CDD59 /* LocationView.swift */; };
 		74699C9C2B0451E700A5BF19 /* Data.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 74699C9A2B0451E700A5BF19 /* Data.xcdatamodeld */; };
-		74699C9E2B04528F00A5BF19 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74699C9D2B04528F00A5BF19 /* Persistence.swift */; };
 		74699CA02B0456C800A5BF19 /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74699C9F2B0456C800A5BF19 /* SignUpView.swift */; };
 		74699CA22B0458C000A5BF19 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74699CA12B0458C000A5BF19 /* LoginView.swift */; };
 		747869972AE3C3FA00A109D1 /* PumpPalApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 747869962AE3C3FA00A109D1 /* PumpPalApp.swift */; };
@@ -27,12 +26,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		74145FC22B08A9F200A96135 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		743023622AE4886F002CDD59 /* ActionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionView.swift; sourceTree = "<group>"; };
 		743023642AE4893B002CDD59 /* MealEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealEntry.swift; sourceTree = "<group>"; };
 		743023662AE489B9002CDD59 /* ViewHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewHistory.swift; sourceTree = "<group>"; };
 		743023682AE489E3002CDD59 /* LocationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationView.swift; sourceTree = "<group>"; };
 		74699C9B2B0451E700A5BF19 /* Data.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Data.xcdatamodel; sourceTree = "<group>"; };
-		74699C9D2B04528F00A5BF19 /* Persistence.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		74699C9F2B0456C800A5BF19 /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
 		74699CA12B0458C000A5BF19 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		747869932AE3C3FA00A109D1 /* PumpPal.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PumpPal.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -77,6 +76,7 @@
 		747869952AE3C3FA00A109D1 /* PumpPal */ = {
 			isa = PBXGroup;
 			children = (
+				74145FC22B08A9F200A96135 /* Info.plist */,
 				747869A62AE3C42400A109D1 /* ViewModel */,
 				747869A52AE3C41D00A109D1 /* View */,
 				747869A42AE3C41500A109D1 /* Model */,
@@ -121,7 +121,6 @@
 		747869A62AE3C42400A109D1 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				74699C9D2B04528F00A5BF19 /* Persistence.swift */,
 				74FFACA42B05BA3A002EE61B /* UserStore.swift */,
 				74EC5A852B084CA300E5912E /* UserTemp.swift */,
 				74EC5A872B0885DC00E5912E /* LocationViewModel.swift */,
@@ -200,7 +199,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				74699C9E2B04528F00A5BF19 /* Persistence.swift in Sources */,
 				743023632AE4886F002CDD59 /* ActionView.swift in Sources */,
 				743023672AE489B9002CDD59 /* ViewHistory.swift in Sources */,
 				74699CA02B0456C800A5BF19 /* SignUpView.swift in Sources */,
@@ -346,6 +344,8 @@
 				DEVELOPMENT_TEAM = 5P5343HN98;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = PumpPal/Info.plist;
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "We need location to tag your meal";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -375,6 +375,8 @@
 				DEVELOPMENT_TEAM = 5P5343HN98;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = PumpPal/Info.plist;
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "We need location to tag your meal";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

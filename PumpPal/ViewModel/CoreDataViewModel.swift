@@ -34,6 +34,23 @@ class CoreDataViewModel:ObservableObject {
     
     
     
+       func addItem(userName:String,pass:String) -> Bool {
+
+            let newItem = UserEntity(context: container.viewContext)
+            newItem.username=userName
+            newItem.password=pass
+                
+            do {
+                try container.viewContext.save()
+                print("User \(newItem.username) saved")
+                return true
+            } catch {
+                let nsError = error as NSError
+                return false
+           
+            }
+        
+        }
     
         
         func getFood(forUser user: UserEntity, forDate date: String) -> [FoodItemEntity] {
@@ -55,11 +72,8 @@ class CoreDataViewModel:ObservableObject {
             }
             return []
         }
-        
-        
-        
-        
-        func saveFood(foodResponse: FoodResponse, forUser user: UserEntity, forDate date: String) {
+
+    func saveFood(foodResponse: FoodResponse, forUser user: UserEntity, forDate date: String, atLatitude lat: Double, atLongitude long:Double) {
             let userFetchRequest: NSFetchRequest<UserEntity> = UserEntity.fetchRequest()
             userFetchRequest.predicate = NSPredicate(format: "username == %@", argumentArray: [user.username])
             
@@ -75,13 +89,13 @@ class CoreDataViewModel:ObservableObject {
                         
                         if let foodHistoryEntity = existingFoodHistoryEntities.first{
                             
-                            associateFoodItems(with: foodResponse.foods,to:foodHistoryEntity)
+                            associateFoodItems(with: foodResponse.foods,to:foodHistoryEntity, atLatitude: lat,atLongitude: long )
                         }else{
                             let newFoodHistoryEntity = FoodHistoryEntity(context: container.viewContext)
                             newFoodHistoryEntity.date = date
                             newFoodHistoryEntity.user = cur_user
                             cur_user.addToFoodHistory(newFoodHistoryEntity)
-                            associateFoodItems(with: foodResponse.foods, to: newFoodHistoryEntity)
+                            associateFoodItems(with: foodResponse.foods, to: newFoodHistoryEntity, atLatitude: lat,atLongitude: long )
                         }
                         try container.viewContext.save()
                         
@@ -102,7 +116,7 @@ class CoreDataViewModel:ObservableObject {
         
         
         
-        func associateFoodItems(with foodItems:[FoodItem], to foodHistoryEntity:FoodHistoryEntity) {
+        func associateFoodItems(with foodItems:[FoodItem], to foodHistoryEntity:FoodHistoryEntity, atLatitude lat: Double, atLongitude long:Double) {
             for foodItem in foodItems{
                 let newFoodItemEntity=FoodItemEntity(context: container.viewContext)
                 newFoodItemEntity.foodName=foodItem.foodName
@@ -110,6 +124,8 @@ class CoreDataViewModel:ObservableObject {
                 newFoodItemEntity.carbohydrates=foodItem.carbohydrates
                 newFoodItemEntity.protein=foodItem.protein
                 newFoodItemEntity.totalFat=foodItem.totalFat
+                newFoodItemEntity.latitude = lat
+                newFoodItemEntity.longitude = long
                 foodHistoryEntity.addToFoodItem(newFoodItemEntity)
             }
         }

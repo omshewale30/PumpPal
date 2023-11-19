@@ -19,61 +19,62 @@ struct LoginView: View {
     @Environment(\.managedObjectContext) private var viewContext
     
     var body: some View{
-        VStack{
-            Text("LOGIN")
-                .font(.title)
-                .fontWeight(.heavy)
-                .padding()
-            
-            TextField("Username", text: $username)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .padding()
-            
-            SecureField("Password", text: $password)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .padding()
-            
-            Button(action: {
-                authenticateUser()
-                isShowingAlert=true
-                
-            }) {
-                Text("Login")
-                    .font(.title2)
-                    .foregroundColor(.white)
+        NavigationStack{
+            VStack{
+                Text("LOGIN")
+                    .font(.title)
+                    .fontWeight(.heavy)
                     .padding()
-                    .frame(maxWidth: .infinity)
-                    .background(Color.blue)
-                    .cornerRadius(10)
-            }
-        }
-        .padding()
-        .background(Color.white)
-        .cornerRadius(20)
-        .shadow(radius: 10)
-        .padding()
-        .alert(isPresented: $isShowingAlert) {
-            if isAuth {
-                return Alert(title: Text("Login Successful"), message: Text("Welcome, \(username)!"), dismissButton: .default(Text("OK")){
-                    userStore.loginUser(username: username, password: password, context: viewContext)
-                    shouldNavigateToActionView=true
+                
+                TextField("Username", text: $username)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .padding()
+                
+                SecureField("Password", text: $password)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .padding()
+                
+                Button(action: {
+                    authenticateUser()
+                    isShowingAlert=true
                     
-                })
-            } else {
-                return Alert(title: Text("Invalid Login"), message: Text("Please check your username and password and try again."), dismissButton: .default(Text("OK")))
+                }) {
+                    Text("Login")
+                        .font(.title2)
+                        .foregroundColor(.white)
+                        .padding()
+                        .frame(maxWidth: .infinity)
+                        .background(Color.blue)
+                        .cornerRadius(10)
+                }
             }
-        }
-        .background(
-            NavigationLink(
-                destination: shouldNavigateToActionView ? ActionView() : nil,
-                isActive: $shouldNavigateToActionView
-            ) {
-                EmptyView()
+            .padding()
+            .background(Color.white)
+            .cornerRadius(20)
+            .shadow(radius: 10)
+            .padding()
+            .alert(isPresented: $isShowingAlert) {
+                if isAuth {
+                    return Alert(title: Text("Login Successful"), message: Text("Welcome, \(username)!"), dismissButton: .default(Text("OK")){
+                        userStore.loginUser(username: username, password: password, context: viewContext)
+                        shouldNavigateToActionView=true
+                        
+                    })
+                } else {
+                    return Alert(title: Text("Invalid Login"), message: Text("Please check your username and password and try again."), dismissButton: .default(Text("OK")))
+                }
             }
-                .navigationTitle("Login")
-            .hidden()
+            .background(
+                NavigationLink(
+                    destination: ActionView().navigationBarBackButtonHidden(true),
+                    isActive: $shouldNavigateToActionView,
+                    label: { EmptyView() }
+                )
+        
             )
+        }
     }
+    
         private func authenticateUser(){
             let context=coreVM.container.viewContext
             let fetchRequest : NSFetchRequest<UserEntity>=UserEntity.fetchRequest()

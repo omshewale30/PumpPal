@@ -13,6 +13,8 @@ struct MealEntry: View {
     @StateObject var coreVM=CoreDataViewModel()
     @State private var date:Date = .now
     @EnvironmentObject var userStore: UserStore
+    
+    @StateObject var locationVM=LocationViewModel()
 
     var body: some View {
         
@@ -29,8 +31,11 @@ struct MealEntry: View {
 
             Button(action: {
                 makeAPICall(query: foodItem){ foodResponse in
-                    if let foodResponse = foodResponse{       
-                        coreVM.saveFood(foodResponse: foodResponse, forUser: userStore.loggedInUser!, forDate: formatToDayMonth(date))
+                    if let foodResponse = foodResponse{     
+                        let userCordinates = locationVM.userLocation?.coordinate
+                        let lat=Double(userCordinates?.latitude ?? 0.0)
+                        let long=Double(userCordinates?.longitude ?? 0.0)
+                        coreVM.saveFood(foodResponse: foodResponse, forUser: userStore.loggedInUser!, forDate: formatToDayMonth(date), atLatitude: lat, atLongitude: long)
                     }
                     else{
                         print("No response")
