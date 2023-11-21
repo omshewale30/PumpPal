@@ -49,8 +49,24 @@ class CoreDataViewModel:ObservableObject {
                 return false
            
             }
-        
         }
+    func fetchFoodHistory(forUser user:UserEntity) -> [FoodItemEntity]{
+        let userFetchRequest: NSFetchRequest<UserEntity> = UserEntity.fetchRequest()
+        userFetchRequest.predicate = NSPredicate(format: "username == %@", argumentArray: [user.username])
+        do{
+            let userResponse=try container.viewContext.fetch(userFetchRequest)
+            if let cur_user=userResponse.first{
+                if let foodHistorySet=cur_user.foodHistory as? Set<FoodHistoryEntity>{
+                    print("Size of foodItemHistory is \(foodHistorySet.count)")
+                    return foodHistorySet.flatMap{$0.foodItem?.allObjects as? [FoodItemEntity] ?? []}
+                }
+            }
+        }catch{
+            print("Couldnt fetch foodHistoryItem")
+        }
+        return []
+        
+    }
     
         
         func getFood(forUser user: UserEntity, forDate date: String) -> [FoodItemEntity] {
