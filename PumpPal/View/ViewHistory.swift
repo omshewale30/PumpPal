@@ -19,61 +19,50 @@ struct ViewHistory: View {
     
     @Environment(\.managedObjectContext) private var viewContext
     @State private var date:Date = .now
-    @State private var fetchedFood:[FoodItemEntity]=[]
+    @State private var isShowingList = false
     
     
     var body: some View {
-        gradient.edgesIgnoringSafeArea(.all)
-            .overlay(
-                    ScrollView{
-                        VStack(alignment: .leading) {
-                                  Text("Meal Summary")
-                                      .font(.largeTitle)
-                                      .bold()
-                                      .padding(.bottom, 20)
-                            DatePicker("Date", selection: $date, displayedComponents: .date)
-                                .datePickerStyle(.compact)
-                                .padding()
-                            
-                            Button("Show data", action: {
-                                fetchedFood = coreVM.getFood(forUser: userStore.loggedInUser!, forDate: formatToDayMonth(date))
-                            })
-                            .buttonStyle(CustomButtonStyle1(buttonColor: Color(hex:"#ef629f") ))
-
-
-                            ForEach(Array(fetchedFood), id: \.self) { foodItem in
-                                VStack(alignment: .center) {
-                                    
-                                    if let foodName = foodItem.foodName {
-                                        Text("Name \(foodName)")
-                                            .font(.headline)
-                                    }
-                                  Text("Carbohydrate \(foodItem.carbohydrates)")
-                                  .font(.headline)
-                                  Text("Fats \(foodItem.totalFat)")
-                                      .font(.headline)
-                                  Text("Protein \(foodItem.protein)")
-                                      .font(.headline)
-                                    Text("LATITUDE \(foodItem.latitude)")
-                                        .font(.headline)
-                                    Text("longitude \(foodItem.longitude)")
-                                        .font(.headline)
-                                    
-                                    
-                                      }
-                                      .background(gradientEntry.edgesIgnoringSafeArea(.all))
-                                      .padding(20)
-                                      .cornerRadius(80)
-                                      .cornerRadius(20) // Apply corner radius
-                                      .shadow(radius: 10) // Add shadow for depth
-                                      .overlay(RoundedRectangle(cornerRadius: 20).stroke(Color.white, lineWidth: 2)) // Add white border
-                                      .padding() // Add extra padding for the border
-                                  }
-                              }
-                              .padding()
-                              .edgesIgnoringSafeArea(.all)
+        ZStack{
+            gradient.edgesIgnoringSafeArea(.all)
+                VStack(alignment: .leading) {
+                    Text("Meal Summary")
+                        .font(.largeTitle)
+                        .bold()
+                        .padding(.bottom, 20)
+                    DatePicker("Date", selection: $date, displayedComponents: .date)
+                        .datePickerStyle(.compact)
+                        .padding()
+                    
+                    Button("Show data", action: {
+                        coreVM.getFood(forUser: userStore.loggedInUser!, forDate: formatToDayMonth(date))
+                        isShowingList=true
+                        
+                    })
+                    .buttonStyle(CustomButtonStyle1(buttonColor: Color(hex:"#ef629f") ))
+                    
+                    List(coreVM.fetchedFood, id: \.self) { foodItem in
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text("Name: \(foodItem.foodName ?? "")")
+                                .font(.headline)
+                            Text("Carbohydrates: \(foodItem.carbohydrates)")
+                                .font(.subheadline)
+                            Text("Fats: \(foodItem.totalFat)")
+                                .font(.subheadline)
+                            Text("Protein: \(foodItem.protein)")
+                                .font(.subheadline)
+                        }
+                        .padding(12)
+                        .background(gradientEntry.edgesIgnoringSafeArea(.all))
+                        .cornerRadius(20)
+                        .shadow(radius: 10)
+                        .overlay(RoundedRectangle(cornerRadius: 20).stroke(Color.white, lineWidth: 2))
+                        .padding([.top, .horizontal])
                     }
-        )
+                }
+                .padding()
+                .edgesIgnoringSafeArea(.all)
+        }
     }
     func formatToDayMonth(_ date: Date) -> String {
         let dateFormatter = DateFormatter()

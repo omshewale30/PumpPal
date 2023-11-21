@@ -17,7 +17,7 @@ import CoreData
 class CoreDataViewModel:ObservableObject {
     
     let container: NSPersistentContainer
-    
+    @Published var fetchedFood: [FoodItemEntity] = []
     init() {
         container = NSPersistentContainer(name: "Data")
         container.loadPersistentStores { (storeDescription, error) in
@@ -89,7 +89,7 @@ class CoreDataViewModel:ObservableObject {
     }
     
         
-        func getFood(forUser user: UserEntity, forDate date: String) -> [FoodItemEntity] {
+        func getFood(forUser user: UserEntity, forDate date: String) {
             let userFetchRequest: NSFetchRequest<UserEntity> = UserEntity.fetchRequest()
             userFetchRequest.predicate = NSPredicate(format: "username == %@", argumentArray: [user.username])
             
@@ -100,13 +100,12 @@ class CoreDataViewModel:ObservableObject {
                     if let foodHistorySet=cur_user.foodHistory as? Set<FoodHistoryEntity>{
                         let filteredFoodHistory=foodHistorySet.filter{$0.date == date}
                         print("Size of foodItemHistory for date \(date) is \(filteredFoodHistory.count)")
-                        return filteredFoodHistory.flatMap{$0.foodItem?.allObjects as? [FoodItemEntity] ?? []}
+                       fetchedFood = filteredFoodHistory.flatMap{$0.foodItem?.allObjects as? [FoodItemEntity] ?? []}
                     }
                 }
             } catch{
                 print("user not found")
             }
-            return []
         }
 
     func saveFood(foodResponse: FoodResponse, forUser user: UserEntity, forDate date: String, atLatitude lat: Double, atLongitude long:Double) {
