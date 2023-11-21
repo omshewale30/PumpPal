@@ -26,6 +26,7 @@ struct LocationView: View {
     var body: some View {
         Map(coordinateRegion: $region, showsUserLocation: true, annotationItems: annotations) { annotation in
             MapPin(coordinate: annotation.id.coordinate, tint: .blue)
+
         }
         .onAppear {
             foodItems=coreVM.fetchFoodHistory(forUser: userStore.loggedInUser!)

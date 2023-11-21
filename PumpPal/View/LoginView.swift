@@ -35,7 +35,7 @@ struct LoginView: View {
                     .padding()
                 
                 Button(action: {
-                    authenticateUser()
+                    isAuth = coreVM.authenticateUser(forUser: username, pass: password)
                     isShowingAlert=true
                     
                 }) {
@@ -58,7 +58,6 @@ struct LoginView: View {
                     return Alert(title: Text("Login Successful"), message: Text("Welcome, \(username)!"), dismissButton: .default(Text("OK")){
                         userStore.loginUser(username: username, password: password, context: viewContext)
                         shouldNavigateToActionView=true
-                        
                     })
                 } else {
                     return Alert(title: Text("Invalid Login"), message: Text("Please check your username and password and try again."), dismissButton: .default(Text("OK")))
@@ -75,27 +74,7 @@ struct LoginView: View {
         }
     }
     
-        private func authenticateUser(){
-            let context=coreVM.container.viewContext
-            let fetchRequest : NSFetchRequest<UserEntity>=UserEntity.fetchRequest()
-            fetchRequest.predicate=NSPredicate(format: "username == %@", username)
-    
-            do {
-                let users = try context.fetch(fetchRequest)
-                if let user = users.first, user.password == password {
-                    isAuth = true
-    
-                } else {
-                    // Display an authentication error message
-                    print("Authentication failed. Incorrect username or password.")
-                }
-            } catch {
-                // Handle the error
-                print("Error fetching user: \(error.localizedDescription)")
-            }
-    
-    
-        }
+
 }
 
             

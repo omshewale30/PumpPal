@@ -38,6 +38,7 @@ struct ViewHistory: View {
                             Button("Show data", action: {
                                 fetchedFood = coreVM.getFood(forUser: userStore.loggedInUser!, forDate: formatToDayMonth(date))
                             })
+                            .buttonStyle(CustomButtonStyle1(buttonColor: Color(hex:"#ef629f") ))
 
 
                             ForEach(Array(fetchedFood), id: \.self) { foodItem in

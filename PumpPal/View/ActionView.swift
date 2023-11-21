@@ -8,46 +8,88 @@
 import SwiftUI
 
 struct ActionView: View {
+    
+    
+    
+    @State private var greeting = GreetingUtility.getGreeting()
+    @State private var currentTime = GreetingUtility.getCurrentTime()
+    @State private var currentDay = GreetingUtility.getCurrentDay()
+    @State private var currentDate = GreetingUtility.getCurrentDate()
+
+   
+
     @EnvironmentObject var userStore: UserStore
     @State private var logOut=false
     var body: some View {
-            VStack(spacing: 20) {
-                Spacer()
-                NavigationLink(destination: MealEntry()){
-                    Text("Log my meal")
+        NavigationView {
+                    VStack(spacing: 20) {
+                        Text("PumpPal")
+                            .font(.system(size: 40, weight: .bold))
+                            .foregroundColor(.black) // Adjust the color to match your design
+                        Spacer()
+                        
+                        Text(greeting)
+                            .font(.title)
+                            .fontWeight(.semibold)
+                            .foregroundColor(.blue)
+
+                        Text("It's \(currentTime)")
+                            .font(.headline)
+                            .foregroundColor(.gray)
+
+                        Text("Today is \(currentDay), \(currentDate)")
+                            .font(.subheadline)
+                            .foregroundColor(.gray)
+                        Spacer()
+                        
+
+  
+                    }
+                    .onAppear {
+                        // Update the time every second
+                        let timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
+                            currentTime = GreetingUtility.getCurrentTime()
+                        }
+                        RunLoop.main.add(timer, forMode: .common)
+                    }
+                    .toolbar {
+                        ToolbarItem(placement: .bottomBar) {
+                            HStack(spacing: 60) {
+                                NavigationLink(destination: MealEntry()) {
+                                    Label("Log", systemImage: "pencil")
+                                        
+                                }
+                                .buttonStyle(PlainButtonStyle())
+                                
+                                NavigationLink(destination: ViewHistory()) {
+                                    Label("History", systemImage: "clock")
+                                        
+                                }
+                                .buttonStyle(PlainButtonStyle())
+                                
+                                NavigationLink(destination: LocationView()) {
+                                    Label("Location", systemImage: "map")
+                                }
+                                .buttonStyle(PlainButtonStyle())
+                                
+                                Button {
+                                    userStore.logout()
+                                    logOut = true
+                                } label: {
+                                    Label("Logout", systemImage: "arrow.backward.square")
+                                }
+                                .buttonStyle(PlainButtonStyle())
+                            }
+                        }
+                    }
                 }
-                .buttonStyle(CustomButtonStyle1())
-                
-                NavigationLink(destination: ViewHistory()) {
-                    Text("View History")
-                }
-                .buttonStyle(CustomButtonStyle1())
-                
-                
-                NavigationLink(destination: LocationView()) {
-                    Text("Where did I eat my meals?")
-                }
-                .buttonStyle(CustomButtonStyle1())
-                
-                Button("Logout", action: {
-                    userStore.logout()
-                    logOut=true
-                  
-                })
-                .buttonStyle(CustomButtonStyle1())
-                
-                Spacer()
-            }
-            .background(
-                NavigationLink(
-                    destination: LoginView().navigationBarBackButtonHidden(true),
-                    isActive: $logOut,
-                    label: { EmptyView() }
+                .background(
+                    NavigationLink(
+                        destination: LoginView().navigationBarBackButtonHidden(true),
+                        isActive: $logOut,
+                        label: { EmptyView() }
+                    )
                 )
-        
-            )
-            .navigationTitle("Activity Tracker")
-            .padding()
         }
     
 }

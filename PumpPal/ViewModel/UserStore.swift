@@ -22,9 +22,10 @@ class UserStore: ObservableObject {
     
     func logout() {
             // Save changes to Core Data
+        
             
 
             // Reset the current user session
-            loggedInUser = nil
+            
     }
 }

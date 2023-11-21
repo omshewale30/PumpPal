@@ -18,18 +18,38 @@ class CoreDataViewModel:ObservableObject {
     
     let container: NSPersistentContainer
     
-    init(inMemory: Bool = false) {
+    init() {
         container = NSPersistentContainer(name: "Data")
-        if inMemory {
-            container.persistentStoreDescriptions.first!.url = URL(fileURLWithPath: "/dev/null")
-        }
-        container.loadPersistentStores(completionHandler: { (storeDescription, error) in
-            if let error = error as NSError? {
-                fatalError("Unresolved error \(error), \(error.userInfo)")
+        container.loadPersistentStores { (storeDescription, error) in
+            if let error = error{
+                print("Error loading coredata \(error)")
             }
-        })
-        container.viewContext.automaticallyMergesChangesFromParent = true
+            else{
+                print("Successfully loaded core data")
+            }
+        }
+//        container.viewContext.automaticallyMergesChangesFromParent = true
         
+    }
+   func authenticateUser(forUser userName :String,pass:String) -> Bool{
+            
+            let fetchRequest : NSFetchRequest<UserEntity>=UserEntity.fetchRequest()
+            fetchRequest.predicate=NSPredicate(format: "username == %@", userName)
+    
+            do {
+                let users = try container.viewContext.fetch(fetchRequest)
+                if let user = users.first, user.password == pass {
+                    return true
+    
+                } else {
+                    // Display an authentication error message
+                    print("Authentication failed. Incorrect username or password.")
+                }
+            } catch {
+                // Handle the error
+                print("Error fetching user: \(error.localizedDescription)")
+            }
+       return false
     }
     
     

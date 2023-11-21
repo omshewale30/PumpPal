@@ -11,6 +11,8 @@
 		743023652AE4893B002CDD59 /* MealEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 743023642AE4893B002CDD59 /* MealEntry.swift */; };
 		743023672AE489B9002CDD59 /* ViewHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 743023662AE489B9002CDD59 /* ViewHistory.swift */; };
 		743023692AE489E3002CDD59 /* LocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 743023682AE489E3002CDD59 /* LocationView.swift */; };
+		744F00AE2B0C3FA800084E20 /* TimeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 744F00AD2B0C3FA800084E20 /* TimeViewModel.swift */; };
+		744F00B02B0C411600084E20 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 744F00AF2B0C411600084E20 /* APIService.swift */; };
 		74699C9C2B0451E700A5BF19 /* Data.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 74699C9A2B0451E700A5BF19 /* Data.xcdatamodeld */; };
 		74699CA02B0456C800A5BF19 /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74699C9F2B0456C800A5BF19 /* SignUpView.swift */; };
 		74699CA22B0458C000A5BF19 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74699CA12B0458C000A5BF19 /* LoginView.swift */; };
@@ -19,7 +21,6 @@
 		7478699B2AE3C3FB00A109D1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7478699A2AE3C3FB00A109D1 /* Assets.xcassets */; };
 		7478699E2AE3C3FB00A109D1 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7478699D2AE3C3FB00A109D1 /* Preview Assets.xcassets */; };
 		74D8623C2AE5E9F2006A53B3 /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74D8623B2AE5E9F2006A53B3 /* UserModel.swift */; };
-		74EC5A862B084CA300E5912E /* UserTemp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74EC5A852B084CA300E5912E /* UserTemp.swift */; };
 		74EC5A882B0885DC00E5912E /* LocationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74EC5A872B0885DC00E5912E /* LocationViewModel.swift */; };
 		74EC5A8A2B089A4B00E5912E /* CoreDataViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74EC5A892B089A4B00E5912E /* CoreDataViewModel.swift */; };
 		74FFACA52B05BA3A002EE61B /* UserStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74FFACA42B05BA3A002EE61B /* UserStore.swift */; };
@@ -31,6 +32,8 @@
 		743023642AE4893B002CDD59 /* MealEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealEntry.swift; sourceTree = "<group>"; };
 		743023662AE489B9002CDD59 /* ViewHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewHistory.swift; sourceTree = "<group>"; };
 		743023682AE489E3002CDD59 /* LocationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationView.swift; sourceTree = "<group>"; };
+		744F00AD2B0C3FA800084E20 /* TimeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeViewModel.swift; sourceTree = "<group>"; };
+		744F00AF2B0C411600084E20 /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
 		74699C9B2B0451E700A5BF19 /* Data.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Data.xcdatamodel; sourceTree = "<group>"; };
 		74699C9F2B0456C800A5BF19 /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
 		74699CA12B0458C000A5BF19 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
@@ -40,7 +43,6 @@
 		7478699A2AE3C3FB00A109D1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		7478699D2AE3C3FB00A109D1 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		74D8623B2AE5E9F2006A53B3 /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
-		74EC5A852B084CA300E5912E /* UserTemp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserTemp.swift; sourceTree = "<group>"; };
 		74EC5A872B0885DC00E5912E /* LocationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationViewModel.swift; sourceTree = "<group>"; };
 		74EC5A892B089A4B00E5912E /* CoreDataViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataViewModel.swift; sourceTree = "<group>"; };
 		74FFACA42B05BA3A002EE61B /* UserStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserStore.swift; sourceTree = "<group>"; };
@@ -122,9 +124,10 @@
 			isa = PBXGroup;
 			children = (
 				74FFACA42B05BA3A002EE61B /* UserStore.swift */,
-				74EC5A852B084CA300E5912E /* UserTemp.swift */,
 				74EC5A872B0885DC00E5912E /* LocationViewModel.swift */,
 				74EC5A892B089A4B00E5912E /* CoreDataViewModel.swift */,
+				744F00AD2B0C3FA800084E20 /* TimeViewModel.swift */,
+				744F00AF2B0C411600084E20 /* APIService.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -200,8 +203,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				743023632AE4886F002CDD59 /* ActionView.swift in Sources */,
+				744F00B02B0C411600084E20 /* APIService.swift in Sources */,
 				743023672AE489B9002CDD59 /* ViewHistory.swift in Sources */,
 				74699CA02B0456C800A5BF19 /* SignUpView.swift in Sources */,
+				744F00AE2B0C3FA800084E20 /* TimeViewModel.swift in Sources */,
 				74D8623C2AE5E9F2006A53B3 /* UserModel.swift in Sources */,
 				743023652AE4893B002CDD59 /* MealEntry.swift in Sources */,
 				747869992AE3C3FA00A109D1 /* ContentView.swift in Sources */,
@@ -210,7 +215,6 @@
 				74699CA22B0458C000A5BF19 /* LoginView.swift in Sources */,
 				74EC5A8A2B089A4B00E5912E /* CoreDataViewModel.swift in Sources */,
 				747869972AE3C3FA00A109D1 /* PumpPalApp.swift in Sources */,
-				74EC5A862B084CA300E5912E /* UserTemp.swift in Sources */,
 				74EC5A882B0885DC00E5912E /* LocationViewModel.swift in Sources */,
 				74FFACA52B05BA3A002EE61B /* UserStore.swift in Sources */,
 			);
