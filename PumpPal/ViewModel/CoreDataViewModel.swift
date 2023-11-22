@@ -11,6 +11,7 @@ class CoreDataViewModel:ObservableObject {
     
     let container: NSPersistentContainer
     @Published var fetchedFood: [FoodItemEntity] = []
+    @Published var fetchedFoodHistory: [FoodHistoryEntity] = []
     
     @Published var fetchedFoodForTimePeriod: [FoodItemEntity] = []
     
@@ -65,6 +66,28 @@ class CoreDataViewModel:ObservableObject {
             return false
         }
     }
+    
+    func deleteFoodItem(foodItem: FoodItemEntity) {
+        container.viewContext.delete(foodItem)
+            do {
+                try container.viewContext.save()
+            } catch {
+
+                let nsError = error as NSError
+                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+            }
+    }
+    
+    func deleteFoodHistoryEntity(foodHistoryEntity: FoodHistoryEntity) {
+        container.viewContext.delete(foodHistoryEntity)
+            do {
+                try container.viewContext.save()
+            } catch {
+
+                let nsError = error as NSError
+                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+            }
+    }
 
     func fetchFoodHistory(forUser user:UserEntity) -> [FoodItemEntity]{
         let userFetchRequest: NSFetchRequest<UserEntity> = UserEntity.fetchRequest()
@@ -102,7 +125,7 @@ class CoreDataViewModel:ObservableObject {
     }
     
     
-    func fetchFoodHistoryEntityForTimePeriod(forUser user:UserEntity,fromDate startDate: Date, toDate endDate:Date) -> [FoodHistoryEntity]{
+    func fetchFoodHistoryEntityForTimePeriod(forUser user:UserEntity,fromDate startDate: Date, toDate endDate:Date){
         let userFetchRequest: NSFetchRequest<UserEntity> = UserEntity.fetchRequest()
         userFetchRequest.predicate = NSPredicate(format: "username == %@", argumentArray: [user.username])
         do{
@@ -116,13 +139,13 @@ class CoreDataViewModel:ObservableObject {
                         return false
                     }
                     print("Size of foodItemHistory for date range \(startDate) to \(endDate) is \(filteredFoodHistory.count)")
-                    return Array(filteredFoodHistory)
+                    fetchedFoodHistory=Array(filteredFoodHistory)
                 }
             }
         }catch{
             print("Couldnt fetch foodHistoryItem")
         }
-        return []
+      
     }
     
     

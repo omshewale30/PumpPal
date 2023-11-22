@@ -8,7 +8,19 @@
 import Foundation
 import Foundation
 
+extension Date {
+    func formattedString() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MM/dd/yyyy"
+        return dateFormatter.string(from: self)
+    }
+}
+
 class TimeViewModel : ObservableObject{
+    
+    @Published var selectedFilter: DateFilter = .pastWeek
+    @Published var startDate: Date = Date()
+    @Published var endDate: Date = Date()
     
     static func getGreeting() -> String {
         let calendar = Calendar.current
@@ -25,7 +37,7 @@ class TimeViewModel : ObservableObject{
             return "Good night!"
         }
     }
-    
+
     
     func formatToDayMonth(_ date: Date) -> Date {
         // Extract the day, month, and year components from the date
@@ -57,5 +69,34 @@ class TimeViewModel : ObservableObject{
         let formatter = DateFormatter()
         formatter.dateFormat = "MMMM d, yyyy"
         return formatter.string(from: Date())
+    }
+
+    enum DateFilter {
+        case pastWeek
+        case lastMonth
+        case allTime
+
+        func getDateRange() -> (startDate: Date, endDate: Date) {
+            let calendar = Calendar.current
+            let currentDate = Date()
+
+            switch self {
+            case .pastWeek:
+                let startDate = calendar.date(byAdding: .day, value: -7, to: currentDate) ?? currentDate
+                return (startDate, currentDate)
+            case .lastMonth:
+                let startDate = calendar.date(byAdding: .month, value: -1, to: currentDate) ?? currentDate
+                return (startDate, currentDate)
+            case .allTime:
+        
+                let startDate = calendar.date(byAdding: .year, value: -1, to: currentDate) ?? currentDate // specify a start date for all time
+                return (startDate, currentDate)
+            }
+        }
+    }
+    func applyFilter() {
+        let dateRange = selectedFilter.getDateRange()
+        startDate = dateRange.startDate
+        endDate = dateRange.endDate
     }
 }

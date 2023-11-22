@@ -10,16 +10,47 @@ import SwiftUI
 import CoreData
 
 struct ContentView: View {
-        var body: some View {
-            NavigationStack{
-                VStack(spacing: 20) {
-                    NavigationLink("Sign Up", destination: SignUpView())
-                    NavigationLink("Login", destination: LoginView())
-                }
+    
+    var body: some View {
+        NavigationStack {
+            ZStack {
+                LinearGradient(gradient: Gradient(colors: [Color.blue, Color.green]), startPoint: .topLeading, endPoint: .bottomTrailing).ignoresSafeArea()
+                    VStack(spacing: 20) {
+                            Spacer()
+                            Image(systemName: "arrow.triangle.2.circlepath.circle")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 150, height: 150)
+                                .clipShape(Circle())
+                                .overlay(Circle().stroke(Color.white, lineWidth: 4))
+                                .shadow(radius: 10)
+                            
+                            NavigationLink(destination: SignUpView()) {
+                                Text("Sign Up")
+                                    .foregroundColor(.white)
+                                    .font(.headline)
+                                    .frame(width: 200, height: 50)
+                                    .background(Color.blue)
+                                    .cornerRadius(25)
+                                    .padding(.bottom, 20)
+                            }
+                            NavigationLink(destination: LoginView()) {
+                                Text("Login")
+                                    .foregroundColor(.white)
+                                    .font(.headline)
+                                    .frame(width: 200, height: 50)
+                                    .background(Color.green)
+                                    .cornerRadius(25)
+                            }
+                            Spacer()
+                        }
+                        .padding()
+                    .navigationBarHidden(true)  
             }
         }
-
     }
+}
+
 
     
 extension Color {

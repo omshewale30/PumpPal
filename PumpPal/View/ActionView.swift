@@ -32,8 +32,10 @@ struct ActionView: View {
                             .font(.title)
                             .fontWeight(.semibold)
                             .foregroundColor(.blue)
+                        Spacer()
+                        
 
-                        Text("It's \(currentTime)")
+                        Text("Time is passing by, What are your gonna do about it? Act now! \(currentTime)")
                             .font(.headline)
                             .foregroundColor(.gray)
 
@@ -41,9 +43,6 @@ struct ActionView: View {
                             .font(.subheadline)
                             .foregroundColor(.gray)
                         Spacer()
-                        
-
-  
                     }
                     .onAppear {
                         // Update the time every second
