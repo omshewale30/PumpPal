@@ -11,10 +11,10 @@ struct ActionView: View {
     
     
     
-    @State private var greeting = GreetingUtility.getGreeting()
-    @State private var currentTime = GreetingUtility.getCurrentTime()
-    @State private var currentDay = GreetingUtility.getCurrentDay()
-    @State private var currentDate = GreetingUtility.getCurrentDate()
+    @State private var greeting = TimeViewModel.getGreeting()
+    @State private var currentTime = TimeViewModel.getCurrentTime()
+    @State private var currentDay = TimeViewModel.getCurrentDay()
+    @State private var currentDate = TimeViewModel.getCurrentDate()
 
    
 
@@ -48,7 +48,7 @@ struct ActionView: View {
                     .onAppear {
                         // Update the time every second
                         let timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
-                            currentTime = GreetingUtility.getCurrentTime()
+                            currentTime = TimeViewModel.getCurrentTime()
                         }
                         RunLoop.main.add(timer, forMode: .common)
                     }

@@ -3,14 +3,7 @@
 //  PumpPal
 //
 //  Created by Om Shewale on 11/18/23.
-//
 
-//
-//  Persistence.swift
-//  Test
-//
-//  Created by Om Shewale on 11/14/23.
-//
 
 import CoreData
 
@@ -18,6 +11,9 @@ class CoreDataViewModel:ObservableObject {
     
     let container: NSPersistentContainer
     @Published var fetchedFood: [FoodItemEntity] = []
+    
+    @Published var fetchedFoodForTimePeriod: [FoodItemEntity] = []
+    
     init() {
         container = NSPersistentContainer(name: "Data")
         container.loadPersistentStores { (storeDescription, error) in
@@ -28,9 +24,9 @@ class CoreDataViewModel:ObservableObject {
                 print("Successfully loaded core data")
             }
         }
-//        container.viewContext.automaticallyMergesChangesFromParent = true
-        
     }
+    
+    
    func authenticateUser(forUser userName :String,pass:String) -> Bool{
             
             let fetchRequest : NSFetchRequest<UserEntity>=UserEntity.fetchRequest()
@@ -54,22 +50,22 @@ class CoreDataViewModel:ObservableObject {
     
     
     
-       func addItem(userName:String,pass:String) -> Bool {
-
-            let newItem = UserEntity(context: container.viewContext)
-            newItem.username=userName
-            newItem.password=pass
-                
-            do {
-                try container.viewContext.save()
-                print("User \(newItem.username) saved")
-                return true
-            } catch {
-                let nsError = error as NSError
-                return false
-           
-            }
+    func addItem(userName: String, pass: String) -> Bool {
+        let newItem = UserEntity(context: container.viewContext)
+        newItem.username = userName
+        newItem.password = pass
+        
+        do {
+            try container.viewContext.save()
+            print("User \(String(describing: newItem.username)) saved")
+            return true
+        } catch {
+            let nsError = error as NSError
+            print("Error saving user: \(nsError), \(nsError.userInfo)")
+            return false
         }
+    }
+
     func fetchFoodHistory(forUser user:UserEntity) -> [FoodItemEntity]{
         let userFetchRequest: NSFetchRequest<UserEntity> = UserEntity.fetchRequest()
         userFetchRequest.predicate = NSPredicate(format: "username == %@", argumentArray: [user.username])
@@ -85,11 +81,55 @@ class CoreDataViewModel:ObservableObject {
             print("Couldnt fetch foodHistoryItem")
         }
         return []
-        
     }
     
+    
+    func fetchFoodHistoryEntity(forUser user:UserEntity) -> [FoodHistoryEntity]{
+        let userFetchRequest: NSFetchRequest<UserEntity> = UserEntity.fetchRequest()
+        userFetchRequest.predicate = NSPredicate(format: "username == %@", argumentArray: [user.username])
+        do{
+            let userResponse=try container.viewContext.fetch(userFetchRequest)
+            if let cur_user=userResponse.first{
+                if let foodHistoryEntitySet=cur_user.foodHistory as? Set<FoodHistoryEntity>{
+                    print("Size of foodItemHistory is \(foodHistoryEntitySet.count)")
+                    return Array(foodHistoryEntitySet)
+                }
+            }
+        }catch{
+            print("Couldnt fetch foodHistoryItem")
+        }
+        return []
+    }
+    
+    
+    func fetchFoodHistoryEntityForTimePeriod(forUser user:UserEntity,fromDate startDate: Date, toDate endDate:Date) -> [FoodHistoryEntity]{
+        let userFetchRequest: NSFetchRequest<UserEntity> = UserEntity.fetchRequest()
+        userFetchRequest.predicate = NSPredicate(format: "username == %@", argumentArray: [user.username])
+        do{
+            let userResponse=try container.viewContext.fetch(userFetchRequest)
+            if let cur_user=userResponse.first{
+                if let foodHistoryEntitySet=cur_user.foodHistory as? Set<FoodHistoryEntity>{
+                    let filteredFoodHistory=foodHistoryEntitySet.filter{ historyEntity in
+                        if let date = historyEntity.date{
+                            return date >= startDate && date <= endDate
+                        }
+                        return false
+                    }
+                    print("Size of foodItemHistory for date range \(startDate) to \(endDate) is \(filteredFoodHistory.count)")
+                    return Array(filteredFoodHistory)
+                }
+            }
+        }catch{
+            print("Couldnt fetch foodHistoryItem")
+        }
+        return []
+    }
+    
+    
+    
+    
         
-        func getFood(forUser user: UserEntity, forDate date: String) {
+        func getFoodForDate(forUser user: UserEntity, forDate date: Date) {
             let userFetchRequest: NSFetchRequest<UserEntity> = UserEntity.fetchRequest()
             userFetchRequest.predicate = NSPredicate(format: "username == %@", argumentArray: [user.username])
             
@@ -107,8 +147,33 @@ class CoreDataViewModel:ObservableObject {
                 print("user not found")
             }
         }
+    
+    
+    func getFoodForTimePeriod(forUser user: UserEntity, fromDate startDate: Date, toDate endDate:Date) {
+        let userFetchRequest: NSFetchRequest<UserEntity> = UserEntity.fetchRequest()
+        userFetchRequest.predicate = NSPredicate(format: "username == %@", argumentArray: [user.username])
+        
+        do {
+            let currentUser = try container.viewContext.fetch(userFetchRequest)
+            if let cur_user = currentUser.first {
+                print(" \(String(describing: cur_user.username)) foodHistory has these many foodhistory entities \(String(describing: cur_user.foodHistory?.count))")
+                if let foodHistorySet=cur_user.foodHistory as? Set<FoodHistoryEntity>{
+                    let filteredFoodHistory=foodHistorySet.filter{ historyEntity in
+                        if let date = historyEntity.date{
+                            return date >= startDate && date <= endDate
+                        }
+                        return false
+                    }
+                    print("Size of foodItemHistory for date range \(startDate) to \(endDate) is \(filteredFoodHistory.count)")
+                   fetchedFoodForTimePeriod = filteredFoodHistory.flatMap{$0.foodItem?.allObjects as? [FoodItemEntity] ?? []}
+                }
+            }
+        } catch{
+            print("user not found")
+        }
+    }
 
-    func saveFood(foodResponse: FoodResponse, forUser user: UserEntity, forDate date: String, atLatitude lat: Double, atLongitude long:Double) {
+    func saveFood(foodResponse: FoodResponse, forUser user: UserEntity, forDate date: Date, atLatitude lat: Double, atLongitude long:Double) {
             let userFetchRequest: NSFetchRequest<UserEntity> = UserEntity.fetchRequest()
             userFetchRequest.predicate = NSPredicate(format: "username == %@", argumentArray: [user.username])
             

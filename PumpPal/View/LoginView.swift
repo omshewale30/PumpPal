@@ -16,7 +16,6 @@ struct LoginView: View {
     @State private var isShowingAlert=false
     @State private var isAuth=false
     @StateObject var coreVM=CoreDataViewModel()
-    @Environment(\.managedObjectContext) private var viewContext
     
     var body: some View{
         NavigationStack{
@@ -56,7 +55,7 @@ struct LoginView: View {
             .alert(isPresented: $isShowingAlert) {
                 if isAuth {
                     return Alert(title: Text("Login Successful"), message: Text("Welcome, \(username)!"), dismissButton: .default(Text("OK")){
-                        userStore.loginUser(username: username, password: password, context: viewContext)
+                        userStore.loginUser(username: username, password: password, context: coreVM.container.viewContext)
                         shouldNavigateToActionView=true
                     })
                 } else {

@@ -9,14 +9,20 @@ import SwiftUI
 import CoreData
 
 struct MealEntry: View {
-    @State private var foodItem = ""
-    @StateObject var coreVM=CoreDataViewModel()
-    @State private var date:Date = .now
     @EnvironmentObject var userStore: UserStore
-    @State var isDiffLocation : Bool = false
-    @State private var addressString=""
+    @StateObject var coreVM=CoreDataViewModel()
     @State var locationVM=LocationViewModel()
     @State var apiService=APIService()
+    @State var timeVM=TimeViewModel()
+    
+    
+    @State private var foodItem = ""
+    @State private var date:Date = .now
+  
+    @State var isDiffLocation : Bool = false
+    @State private var addressString=""
+
+    
     
     @State private var foodResponse: FoodResponse = .init(foods: .init())
     
@@ -85,7 +91,7 @@ struct MealEntry: View {
                         let userCordinates = locationVM.userLocation?.coordinate
                         let lat=Double(userCordinates?.latitude ?? 0.0)
                         let long=Double(userCordinates?.longitude ?? 0.0)
-                        coreVM.saveFood(foodResponse: foodResponse, forUser: userStore.loggedInUser!, forDate: formatToDayMonth(date), atLatitude: lat, atLongitude: long)
+                        coreVM.saveFood(foodResponse: foodResponse, forUser: userStore.loggedInUser!, forDate: timeVM.formatToDayMonth(date), atLatitude: lat, atLongitude: long)
                     case .failure(let error):
                         showAlert=true
                         print("Error \(error)")
@@ -113,15 +119,7 @@ struct MealEntry: View {
     
     
 
-    func formatToDayMonth(_ date: Date) -> String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "MM/dd/yyyy"
-        
-        // Format the date to a string
-        let formattedDateString = dateFormatter.string(from: date)
-        
-        return formattedDateString
-    }
+
 }
 
 struct MealEntry_Previews: PreviewProvider {

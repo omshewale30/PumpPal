@@ -8,7 +8,7 @@
 import Foundation
 import Foundation
 
-class GreetingUtility {
+class TimeViewModel : ObservableObject{
     
     static func getGreeting() -> String {
         let calendar = Calendar.current
@@ -23,6 +23,21 @@ class GreetingUtility {
             return "Good evening!"
         default:
             return "Good night!"
+        }
+    }
+    
+    
+    func formatToDayMonth(_ date: Date) -> Date {
+        // Extract the day, month, and year components from the date
+        let calendar = Calendar.current
+        let components = calendar.dateComponents([.day, .month, .year], from: date)
+
+        // Create a new date using the extracted components
+        if let formattedDate = calendar.date(from: components) {
+            return formattedDate
+        } else {
+            print("Date conversion failed")
+            return date
         }
     }
 
