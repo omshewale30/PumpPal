@@ -29,15 +29,14 @@ struct SignUpView: View {
                     .fontWeight(.heavy)
                     .padding()
                     .foregroundStyle(Color(hex: "#454d66"))
-                VStack{
-                    TextField("Username", text: $username)
-                        .padding()
-            
-                    
-                    SecureField("Password", text: $password)
-                        .padding()
-                }
-                .background(Color(hex: "#efeeb4"))
+             
+                TextField("Username", text: $username)
+                    .padding()
+        
+                
+                SecureField("Password", text: $password)
+                    .padding()
+        
 
                 Button(action: {
                     isAdded = coreVM.addItem(userName: username, pass: password)
